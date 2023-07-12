@@ -1,25 +1,24 @@
 import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
 import { getTable } from "../../utils/api/board";
 import { useParams } from "react-router-dom";
-import { setTable } from "../../utils/redux/board";
 import Post from "../../components/Post/Post";
 
 const Board = () => {
   const { boardID, tableID } = useParams();
 
-  const dispatch = useDispatch();
-  const table = useSelector((state) => state.boardsReducer.table);
+  const [table, setTable] = useState([]);
 
   function initialBoards() {
-    const myPromise = getTable(boardID, tableID);
-    myPromise
-      .then(function (data) {
-        dispatch(setTable(data.data[0]));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    const response = getTable(boardID, tableID);
+
+    response
+    .then(function (data) {
+      setTable(data.data[0]);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+    
   }
 
   useEffect(() => {
